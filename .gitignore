@@ -1,3 +1,11 @@
 
 
 \.beej\'s\ examples/
+
+recv
+send
+
+*.o
+.*.sw*
+*~
+
