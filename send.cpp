@@ -8,7 +8,7 @@
 int main(int argc, char **argv)
 {
 
-    Socket sender;
+    Socket sender(false, SOCK_PATH);
 
     std::string sendMsg;
     if (argc < 2)

@@ -1,9 +1,11 @@
 CC = gcc
 CXX = g++
 
-FLAGS = -g -Wall -Wextra
+FLAGS = -g -Wall -Wextra -Werror -pedantic
 CFLAGS = -std=gnu99
 NOLINK = -c
+
+all: send recv
 
 sock: sockets.cpp
 	${CXX} ${FLAGS} ${NOLINK} $^
@@ -16,3 +18,4 @@ recv: receive.cpp sockets.cpp
 
 clean:
 	rm *.o
+

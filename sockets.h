@@ -1,5 +1,5 @@
 #ifndef SOCKETS_H
-#define SOCKETS_H 
+#define SOCKETS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,9 +14,18 @@
 #include <string>
 
 /***************CHANGE THESE WHENEVER YOU NEED TO*************/
-static const char *SOCK_PATH = "GENERIC_SOCKET";
+#ifndef SOCK_PATH
+#define SOCK_PATH "GENERIC_SOCKET"
+#endif
+
+#ifndef REQUEST_BACKLOG
 #define REQUEST_BACKLOG 5
-#define RECV_BUF_LEN 1000
+#endif
+
+#ifndef RECV_BUF_LEN
+#define RECV_BUF_LEN 4096
+#endif
+
 /*************************************************************/
 
 // Sockets tend to be used in pairs. This header provides one
@@ -24,20 +33,18 @@ static const char *SOCK_PATH = "GENERIC_SOCKET";
 // you'd like
 class Socket {
     public:
-        // Client by default
-        Socket();
         // Servers don't call connect
         Socket(bool server, const char *s_path = SOCK_PATH);
         ~Socket();
 
-        // Hey! I haven't tested these!
-        Socket(const Socket &source);
-        Socket &operator= (const Socket &source);
-
-        int ssend(std::string buf);
+        int ssend(const std::string &buf);
         int sreceive(std::string &buf);
 
     private:
+        // Dont even think about it
+        Socket(const Socket &source);
+        Socket &operator= (const Socket &source);
+
         struct sockaddr_un remote;
         struct sockaddr_un local;
         const char *sock_path;
@@ -50,5 +57,17 @@ class Socket {
         bool active_server;
 };
 
+template<typename T>
+Socket& operator<<(Socket &sock, T thing)
+{
+    sock.ssend(std::to_string(thing));
+}
+
+Socket& operator>>(Socket &sock, std::string &buf)
+{
+    sock.sreceive(buf);
+    return sock;
+}
 
 #endif
+

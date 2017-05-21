@@ -17,7 +17,7 @@ int main()
 
     recv_intermediate = "I got your message!";
     std::cerr << "Replying: [" << recv_intermediate << "]\n";
-    
+
     listener.ssend(recv_intermediate);
 
     return 0;
